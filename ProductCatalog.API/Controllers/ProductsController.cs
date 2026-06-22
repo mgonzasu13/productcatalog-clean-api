@@ -24,6 +24,13 @@ public sealed class ProductsController : ControllerBase
         return Ok(products);
     }
 
+    [HttpGet("holamundo")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    public ActionResult<string> GetHolaMundo()
+    {
+        return Ok("Hola Mundo");
+    }
+
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(ProductResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
