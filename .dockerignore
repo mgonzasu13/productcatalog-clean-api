@@ -1,0 +1,15 @@
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/TestResults
+**/*.user
+**/*.suo
+**/*.pubxml
+**/*.pubxml.user
+publish
+.git
+.gitignore
+Dockerfile*
+docker-compose*
+README.md
