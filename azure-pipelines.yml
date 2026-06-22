@@ -1,0 +1,50 @@
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  dockerRegistryServiceConnection: 'f9393711-ed73-4c1c-94a8-c9948107f466'
+  azureSubscription: 'sc-productcatalog-azure'
+  imageRepository: 'productcatalog-api'
+  containerRegistry: 'acrproductcatalogmgonz.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+  appName: 'app-productcatalog-docker-api-prd'
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build and push
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push image to ACR
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+
+- stage: Deploy
+  displayName: Deploy to App Service
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    displayName: Deploy container
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: AzureWebAppContainer@1
+      displayName: Deploy image to Azure App Service
+      inputs:
+        azureSubscription: $(azureSubscription)
+        appName: $(appName)
+        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
