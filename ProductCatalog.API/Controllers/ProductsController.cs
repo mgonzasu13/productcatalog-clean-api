@@ -24,11 +24,11 @@ public sealed class ProductsController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("holamundo")]
+    [HttpGet("holamundo2")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public ActionResult<string> GetHolaMundo()
     {
-        return Ok("Hola Mundo");
+        return Ok("Hola Mundo2");
     }
 
     [HttpGet("{id:int}")]
